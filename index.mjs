@@ -1,21 +1,33 @@
 // @ts-check
 
-import * as telegram from './modules/telegram.mjs';
-import * as uwu from './modules/uwu.mjs';
+import url from 'url';
+import path from 'path';
 import { config } from './modules/config.mjs';
+import * as uwu from './modules/uwu.mjs';
+import * as telegram from './modules/telegram.mjs';
 
 
+const __production = process.argv.includes('--production');
 const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const __production = process.argv.includes('--production');
+console.log({ config, __production, __filename, __dirname });
 
-// goals
-// create record
-// update record
-// delete record
+process.nextTick(async () => {
+  try {
 
-// /add
-// /update
+    const app = uwu.uws.App({});
 
-console.log({ config });
+    app.get('/*', uwu.create_handler(async (response, request) => {
+      response.json = { request };
+    }));
+
+    await uwu.serve_http(app, uwu.port_access_types.EXCLUSIVE, config.http_port);
+
+    console.log(`Listening to port ${config.http_port}.`);
+
+  } catch (e) {
+    console.error(e);
+    process.exit(1);
+  }
+});
