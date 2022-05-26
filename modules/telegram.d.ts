@@ -1,3 +1,6 @@
+
+import * as grammyjs_types from '@grammyjs/types';
+
 export type endpoint = (token: string, method: string) => string;
 export const endpoint: create_endpoint;
 
@@ -38,8 +41,12 @@ export interface get_updates_body {
   allowed_updates: string[];
   [key: string]: any;
 }
-export type get_updates = (token: string, body: get_updates_body) => Promise<undici2.response>;
+export type get_updates = (token: string, body: get_updates_body) => Promise<any>;
 export const get_updates: get_updates;
+
+export type stream_update = (update: grammyjs_types.Update) => Promise<void>;
+export type stream_updates = (token: string, stream_update: stream_update) => Promise<any>;
+export const stream_updates: stream_updates;
 
 export type code = (value: string) => string;
 export type text = (value: string) => string;
