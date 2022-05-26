@@ -25,9 +25,8 @@ export const post = async (url, body) => {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(body),
   });
-  const json = await response.json();
-  console.log({ json });
   assert(response.status === 200);
+  const json = await response.json();
   return json;
 };
 
@@ -82,11 +81,9 @@ export const delete_webhook = async (token) => {
 
 
 /**
- *
- * @param {string} value
- * @returns {string}
+ * @type {import('./telegram').code}
  */
-const code = (value) => {
+export const code = (value) => {
   assert(typeof value === 'string');
   return value
     .replace(/\\/g, '\\\\')
@@ -95,24 +92,9 @@ const code = (value) => {
 
 
 /**
- *
- * @param {string} value
- * @returns {string}
+ * @type {import('./telegram').text}
  */
-const url = (value) => {
-  assert(typeof value === 'string');
-  return value
-    .replace(/\\/g, '\\\\')
-    .replace(/\)/g, '\\)');
-};
-
-
-/**
- *
- * @param {string} value
- * @returns {string}
- */
-const text = (value) => {
+export const text = (value) => {
   assert(typeof value === 'string');
   return value
     .replace(/_/g, '\\_')
@@ -133,4 +115,15 @@ const text = (value) => {
     .replace(/\}/g, '\\}')
     .replace(/\./g, '\\.')
     .replace(/!/g, '\\!');
+};
+
+
+/**
+ * @type {import('./telegram').url}
+ */
+export const url = (value) => {
+  assert(typeof value === 'string');
+  return value
+    .replace(/\\/g, '\\\\')
+    .replace(/\)/g, '\\)');
 };

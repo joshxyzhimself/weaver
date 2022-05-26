@@ -32,3 +32,7 @@ export const set_webhook: set_webhook;
 
 export type delete_webhook = (token: string) => Promise<any>;
 export const delete_webhook: delete_webhook;
+
+export type code = (value: string) => string;
+export type text = (value: string) => string;
+export type url = (value: string) => string;

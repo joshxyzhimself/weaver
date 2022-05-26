@@ -28,7 +28,7 @@ process.nextTick(async () => {
 
     await telegram.send_message(config.telegram_token, {
       chat_id: -691850503,
-      text: 'Example message.',
+      text: telegram.text('Example message.'),
       parse_mode: 'MarkdownV2',
     });
 
