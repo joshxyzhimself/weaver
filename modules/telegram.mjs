@@ -80,6 +80,20 @@ export const delete_webhook = async (token) => {
 
 
 /**
+ * @type {import('./telegram').get_updates}
+ */
+export const get_updates = async (token, body) => {
+  assert(typeof token === 'string');
+  assert(body instanceof Object);
+  assert(body.offset === undefined || typeof body.offset === 'number');
+  assert(body.allowed_updates instanceof Array);
+  const response = await post(endpoint(token, 'getUpdates'), body);
+  assert(response instanceof Object);
+  return response;
+};
+
+
+/**
  * @type {import('./telegram').code}
  */
 export const code = (value) => {

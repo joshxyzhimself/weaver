@@ -33,6 +33,14 @@ export const set_webhook: set_webhook;
 export type delete_webhook = (token: string) => Promise<any>;
 export const delete_webhook: delete_webhook;
 
+export interface get_updates_body {
+  offset?: number;
+  allowed_updates: string[];
+  [key: string]: any;
+}
+export type get_updates = (token: string, body: get_updates_body) => Promise<undici2.response>;
+export const get_updates: get_updates;
+
 export type code = (value: string) => string;
 export type text = (value: string) => string;
 export type url = (value: string) => string;
