@@ -10,7 +10,7 @@
   "postgresql_username": "postgres",
   "postgresql_password": "postgres",
   "postgresql_database": "postgres",
-  "telegram_token": "test"
+  "telegram_token": "example_token"
 }
 ```
 

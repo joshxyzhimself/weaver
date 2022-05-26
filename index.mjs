@@ -26,6 +26,12 @@ process.nextTick(async () => {
 
     console.log(`Listening to port ${config.http_port}.`);
 
+    await telegram.send_message(config.telegram_token, {
+      chat_id: -691850503,
+      text: 'Example message.',
+      parse_mode: 'MarkdownV2',
+    });
+
   } catch (e) {
     console.error(e);
     process.exit(1);

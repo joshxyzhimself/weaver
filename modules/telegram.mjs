@@ -19,12 +19,15 @@ export const endpoint = (token, method) => {
 export const post = async (url, body) => {
   assert(typeof url === 'string');
   assert(body instanceof Object);
+  console.log({ body });
   const response = await fetch(url, {
     method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(body),
   });
-  assert(response.status === 200);
   const json = await response.json();
+  console.log({ json });
+  assert(response.status === 200);
   return json;
 };
 
@@ -75,4 +78,49 @@ export const delete_webhook = async (token) => {
   assert(typeof token === 'string');
   const response = await post(endpoint(token, 'deleteWebhook'), {});
   return response;
+};
+
+
+/**
+ *
+ * @param {string} value
+ * @returns {string}
+ */
+const encode_code = (value) => {
+  assert(typeof value === 'string');
+  return value
+    .replace(/\\/g, '\\\\')
+    .replace(/`/g, '\\`');
+};
+
+
+const url = (value) => {
+  assert(typeof value === 'string');
+  return value
+    .replace(/\\/g, '\\\\')
+    .replace(/\)/g, '\\)');
+};
+
+
+const text = (value) => {
+  assert(typeof value === 'string');
+  return value
+    .replace(/_/g, '\\_')
+    .replace(/\*/g, '\\*')
+    .replace(/\[/g, '\\[')
+    .replace(/\]/g, '\\]')
+    .replace(/\(/g, '\\(')
+    .replace(/\)/g, '\\)')
+    .replace(/~/g, '\\~')
+    .replace(/`/g, '\\`')
+    .replace(/>/g, '\\>')
+    .replace(/#/g, '\\#')
+    .replace(/\+/g, '\\+')
+    .replace(/-/g, '\\-')
+    .replace(/=/g, '\\=')
+    .replace(/\|/g, '\\|')
+    .replace(/\{/g, '\\{')
+    .replace(/\}/g, '\\}')
+    .replace(/\./g, '\\.')
+    .replace(/!/g, '\\!');
 };
