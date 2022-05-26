@@ -1,7 +1,7 @@
 // @ts-check
 
-import assert from 'assert';
 import fetch from 'node-fetch';
+import { assert } from './assert.mjs';
 
 /**
  * @type {import('./telegram').endpoint}
@@ -19,7 +19,6 @@ export const endpoint = (token, method) => {
 export const post = async (url, body) => {
   assert(typeof url === 'string');
   assert(body instanceof Object);
-  console.log({ body });
   const response = await fetch(url, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
