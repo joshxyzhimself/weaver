@@ -1,0 +1,19 @@
+{
+  "name": "weaver",
+  "version": "0.0.0",
+  "main": "index.mjs",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joshxyzhimself/weaver.git"
+  },
+  "author": "joshxyzhimself <joshxyzhimself@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/joshxyzhimself/weaver/issues"
+  },
+  "homepage": "https://github.com/joshxyzhimself/weaver#readme",
+  "dependencies": {
+    "luxon": "^2.4.0",
+    "node-fetch": "^3.2.4"
+  }
+}
