@@ -105,18 +105,22 @@ export const stream_updates = async (token, on_update) => {
   await delete_webhook(token);
   const stream_update = async (offset) => {
     assert(offset === undefined || typeof offset === 'number');
-    const updates = await get_updates(token, { offset, allowed_updates: ['message'] });
-    for (let i = 0, l = updates.length; i < l; i += 1) {
-      const update = updates[i];
-      try {
-        await on_update(update);
-      } catch (e) {
-        console.error(e);
+    try {
+      const updates = await get_updates(token, { offset, allowed_updates: ['message'] });
+      for (let i = 0, l = updates.length; i < l; i += 1) {
+        const update = updates[i];
+        try {
+          await on_update(update);
+        } catch (e) {
+          console.error(e);
+        }
       }
+      await sleep(1000);
+      const next_offset = updates.length === 0 ? undefined : updates[updates.length - 1].update_id + 1;
+      process.nextTick(stream_update, next_offset);
+    } catch (e) {
+      console.error(e.message);
     }
-    await sleep(1000);
-    const next_offset = updates.length === 0 ? undefined : updates[updates.length - 1].update_id + 1;
-    process.nextTick(stream_update, next_offset);
   };
   process.nextTick(stream_update);
 };
