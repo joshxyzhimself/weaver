@@ -86,7 +86,7 @@ export const delete_webhook = async (token) => {
  * @param {string} value
  * @returns {string}
  */
-const encode_code = (value) => {
+const code = (value) => {
   assert(typeof value === 'string');
   return value
     .replace(/\\/g, '\\\\')
@@ -94,6 +94,11 @@ const encode_code = (value) => {
 };
 
 
+/**
+ *
+ * @param {string} value
+ * @returns {string}
+ */
 const url = (value) => {
   assert(typeof value === 'string');
   return value
@@ -102,6 +107,11 @@ const url = (value) => {
 };
 
 
+/**
+ *
+ * @param {string} value
+ * @returns {string}
+ */
 const text = (value) => {
   assert(typeof value === 'string');
   return value
