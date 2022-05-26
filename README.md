@@ -1,26 +1,26 @@
 # weaver
 
-#### Supported
+#### supported
 
-- Timezones
-- Daily tasks
-- weekly tasks
+- set timezone
+- create daily task
+- create weekly task
 
-#### Not supported
+#### not supported
 
-- One-time tasks
-- Monthly tasks
-- Yearly tasks
+- create one-time tasks
+- create monthly tasks
+- create yearly tasks
 
-#### Timezone
+#### set timezone
 
-- Default timezone is UTC
-- /tz +8
-- /tz -8
+- Default timezone is UTC+00
+- /tz +08
+- /tz -08
 
-#### Daily Task
+#### create daily task
 
-- /daily example-task 7pm
+- /daily example-task 1900
 
 ```ts
 interface daily_task {
@@ -32,9 +32,9 @@ interface daily_task {
 }
 ```
 
-#### Weekly Task
+#### create weekly task
 
-- /weekly example-task monday 7pm
+- /weekly example-task monday 1900
 
 ```ts
 interface weekly_task {
@@ -46,6 +46,15 @@ interface weekly_task {
   next: number;
 }
 ```
+
+#### show tasks
+
+- /daily
+- /weekly
+
+#### remove tasks
+
+- /remove example-task
 
 #### Check
 
