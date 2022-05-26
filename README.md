@@ -1,5 +1,19 @@
 # weaver
 
+#### config
+
+```json
+{
+  "http_port": 8080,
+  "postgresql_host": "localhost",
+  "postgresql_port": 5432,
+  "postgresql_username": "postgres",
+  "postgresql_password": "postgres",
+  "postgresql_database": "postgres",
+  "telegram_token": "test"
+}
+```
+
 #### supported
 
 - set timezone

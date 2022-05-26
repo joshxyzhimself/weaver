@@ -1,11 +1,14 @@
 // @ts-check
 
-const assert = require('assert');
+import * as telegram from './modules/telegram.mjs';
+import { config } from './modules/config.mjs';
 
 // goals
 // create record
 // update record
 // delete record
 
-// /add 
-// /update 
+// /add
+// /update
+
+console.log({ config });
