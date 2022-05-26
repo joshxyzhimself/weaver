@@ -1,9 +1,16 @@
 # weaver
 
-#### Overview
+#### Supported
 
-- For scheduling daily tasks
-- For weekly tasks
+- Timezones
+- Daily tasks
+- weekly tasks
+
+#### Not supported
+
+- One-time tasks
+- Monthly tasks
+- Yearly tasks
 
 #### Timezone
 
@@ -11,13 +18,9 @@
 - /tz +8
 - /tz -8
 
-#### Task
+#### Daily Task
 
 - /daily example-task 7pm
-- /weekly example-task monday
-- /monthly
-
-##### Schemas
 
 ```ts
 interface daily_task {
@@ -25,18 +28,22 @@ interface daily_task {
   chat_id: string;
   name: string;
   hour: number;
+  next: number;
 }
+```
+
+#### Weekly Task
+
+- /weekly example-task monday 7pm
+
+```ts
 interface weekly_task {
   id: string;
   chat_id: string;
   name: string;
   day: number;
-}
-interface monthly_task {
-  id: string;
-  chat_id: string;
-  name: string;
-  week: number;
+  hour: number;
+  next: number;
 }
 ```
 
@@ -44,4 +51,9 @@ interface monthly_task {
 
 ```js
 const now = luxon.DateTime.now();
+
+// if now is greater than next
+// create notification
+// update task.next
+
 ```
