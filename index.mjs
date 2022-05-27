@@ -7,6 +7,7 @@ import { config } from './modules/config.mjs';
 import * as uwu from './modules/uwu.mjs';
 import * as telegram from './modules/telegram.mjs';
 import { assert } from './modules/assert.mjs';
+import { sleep } from './modules/sleep.mjs';
 
 const __production = process.argv.includes('--production');
 const __filename = url.fileURLToPath(import.meta.url);
@@ -31,6 +32,35 @@ const utc_offset_to_timezone = (offset) => {
   return 'UTC'.concat(String(offset));
 };
 
+const check_tasks = async () => {
+  for (let i = 0, l = tasks.length; i < l; i += 1) {
+    const task = tasks[i];
+    const utc_offset = utc_offsets.get(task.chat_id);
+    const now = luxon.DateTime.now().setZone(utc_offset_to_timezone(utc_offset));
+    const next = luxon.DateTime.fromISO(task.next);
+    if (next < now) {
+      try {
+        task.next = next.plus({ day: 1 });
+        const text = [
+          '-- task:',
+          `name: ${task.name}`,
+          `next: ${next.toISO()}`,
+        ].join('\n');
+        await telegram.send_message(config.telegram_token, {
+          chat_id: task.chat_id,
+          text: telegram.text(text),
+          parse_mode: 'MarkdownV2',
+        });
+      } catch (e) {
+        console.error(e);
+      }
+    }
+  }
+  await sleep(1000);
+  process.nextTick(check_tasks);
+};
+process.nextTick(check_tasks);
+
 process.nextTick(async () => {
 
   const app = uwu.uws.App({});
@@ -52,7 +82,7 @@ process.nextTick(async () => {
           if (segments.length === 1) {
             const utc_offset = utc_offsets.get(chat_id) || 0;
             await telegram.send_message(config.telegram_token, {
-              chat_id: -691850503,
+              chat_id,
               text: telegram.text(`Timezone offset is ${utc_offset_to_timezone(utc_offset)}.`),
               parse_mode: 'MarkdownV2',
             });
@@ -75,14 +105,14 @@ process.nextTick(async () => {
             utc_offsets.set(chat_id, offset_number);
 
             await telegram.send_message(config.telegram_token, {
-              chat_id: -691850503,
+              chat_id,
               text: telegram.text(`Timezone offset set to ${utc_offset_to_timezone(utc_offset)}.`),
               parse_mode: 'MarkdownV2',
             });
 
           } catch (e) {
             await telegram.send_message(config.telegram_token, {
-              chat_id: -691850503,
+              chat_id,
               text: telegram.text(e.message),
               parse_mode: 'MarkdownV2',
             });
@@ -90,9 +120,8 @@ process.nextTick(async () => {
           break;
         }
         case '/daily': {
+          const chat_id = update.message.chat.id;
           try {
-
-            const chat_id = update.message.chat.id;
             const utc_offset = utc_offsets.get(chat_id) || 0;
 
             const name = segments[1];
@@ -120,23 +149,20 @@ process.nextTick(async () => {
             tasks.push(task);
 
             const text = [
-              '-- created:',
+              '-- task created:',
               `name: ${name}`,
-              `now: ${now.toISO()}`,
-              `current: ${current.toISO()}`,
               `next: ${next.toISO()}`,
-              JSON.stringify({ task }, null, 2),
             ].join('\n');
 
             await telegram.send_message(config.telegram_token, {
-              chat_id: -691850503,
+              chat_id,
               text: telegram.text(text),
               parse_mode: 'MarkdownV2',
             });
 
           } catch (e) {
             await telegram.send_message(config.telegram_token, {
-              chat_id: -691850503,
+              chat_id,
               text: telegram.text(e.message),
               parse_mode: 'MarkdownV2',
             });
@@ -147,8 +173,9 @@ process.nextTick(async () => {
           break;
         }
         case '/test': {
+          const chat_id = update.message.chat.id;
           await telegram.send_message(config.telegram_token, {
-            chat_id: -691850503,
+            chat_id,
             text: telegram.text('/test OK.'),
             parse_mode: 'MarkdownV2',
           });
