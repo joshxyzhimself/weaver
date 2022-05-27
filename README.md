@@ -32,18 +32,6 @@ Notes:
 - for team use, add the bot to your group. 
 ```
 
-#### Configuration
-
-- config.json
-
-```json
-{
-  "http_hostname": "XXX",
-  "http_port": 8080,
-  "telegram_token": "XXX"
-}
-```
-
 #### Supported
 
 - set timezone
@@ -57,6 +45,18 @@ Notes:
 - weekly task
 - monthly tasks
 - yearly tasks
+
+#### Configuration
+
+- config.json
+
+```json
+{
+  "http_hostname": "XXX",
+  "http_port": 8080,
+  "telegram_token": "XXX"
+}
+```
 
 #### Database
 
