@@ -22,8 +22,8 @@ Examples:
 /list
 
 Notes:
-- default time zone offset is UTC+0.
-- set your time zone offset before creating tasks.
+- default tz offset is UTC+0.
+- set your tz offset before creating tasks.
 - task-name must be in kebab-case-format.
 - hhmm is in military time format, 0000 to 2359.
 ```
