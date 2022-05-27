@@ -235,7 +235,7 @@ const handle_update = async (update) => {
         if (tasks.length === 0) {
           text += '\n(none)';
         } else {
-          tasks.forEach((task) => {
+          tasks.filter((task) => task.chat_id === chat_id).forEach((task) => {
             const next = luxon.DateTime.fromISO(task.next);
             text += `\n${task.name} (next ${next.toRelative()})`;
           });
