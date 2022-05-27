@@ -67,6 +67,11 @@ Notes:
 - PM2 for process management.
 - Caddy for TLS.
 
+#### Credits
+
+- https://unsplash.com/photos/6cgqD95Cfi8
+- Photo by Reza Delkhosh, used as bot pic.
+
 #### License
 
 MIT
