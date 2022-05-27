@@ -14,7 +14,12 @@ const __dirname = path.dirname(__filename);
 
 console.log({ config, __production, __filename, __dirname });
 
-let utc_offset = 0;
+/**
+ * @type {Map<number, number>}
+ */
+const utc_offsets = new Map();
+
+const tasks = [];
 
 /**
  * @param {number} offset
@@ -43,7 +48,9 @@ process.nextTick(async () => {
       const segments = update.message.text.split(' ');
       switch (segments[0]) {
         case '/tz': {
+          const chat_id = update.message.chat.id;
           if (segments.length === 1) {
+            const utc_offset = utc_offsets.get(chat_id) || 0;
             await telegram.send_message(config.telegram_token, {
               chat_id: -691850503,
               text: telegram.text(`Timezone offset is ${utc_offset_to_timezone(utc_offset)}.`),
@@ -52,6 +59,7 @@ process.nextTick(async () => {
             break;
           }
           try {
+
             const offset_string = segments[1];
             assert(typeof offset_string === 'string', 'ERR_INVALID_utc_offset', 'Invalid timezone offset.');
 
@@ -63,11 +71,12 @@ process.nextTick(async () => {
             assert(Number.isFinite(offset_number) === true, 'ERR_INVALID_utc_offset', 'Invalid timezone offset.');
             assert(Number.isInteger(offset_number) === true, 'ERR_INVALID_utc_offset', 'Invalid timezone offset.');
 
-            utc_offset = offset_number;
+            const utc_offset = offset_number;
+            utc_offsets.set(chat_id, offset_number);
 
             await telegram.send_message(config.telegram_token, {
               chat_id: -691850503,
-              text: telegram.text(`Timezone offset set to ${offset_string}.`),
+              text: telegram.text(`Timezone offset set to ${utc_offset_to_timezone(utc_offset)}.`),
               parse_mode: 'MarkdownV2',
             });
 
@@ -82,6 +91,10 @@ process.nextTick(async () => {
         }
         case '/daily': {
           try {
+
+            const chat_id = update.message.chat.id;
+            const utc_offset = utc_offsets.get(chat_id) || 0;
+
             const name = segments[1];
             assert(typeof name === 'string', 'ERR_INVALID_TASK_NAME', 'Invalid task name.');
 
@@ -96,21 +109,29 @@ process.nextTick(async () => {
 
             const hour = Number(time_string.substring(0, 2));
             const minute = Number(time_string.substring(2, 4));
-            const now = luxon.DateTime.utc();
-            const current = luxon.DateTime.utc().set({ hour, minute });
+
+            const now = luxon.DateTime.now().setZone(utc_offset_to_timezone(utc_offset));
+            const current = now.set({ hour, minute, second: 0, millisecond: 0 });
             const next = now < current ? current : current.plus({ day: 1 });
+
+            const task = { chat_id, name, next: next.toISO() };
+            tasks.push(task);
+
             const text = [
               '-- created:',
               `name: ${name}`,
-              `now: ${now.toHTTP()}`,
-              `current: ${current.toHTTP()}`,
-              `next: ${next.toHTTP()}`,
+              `now: ${now.toISO()}`,
+              `current: ${current.toISO()}`,
+              `next: ${next.toISO()}`,
+              JSON.stringify({ task }, null, 2),
             ].join('\n');
+
             await telegram.send_message(config.telegram_token, {
               chat_id: -691850503,
               text: telegram.text(text),
               parse_mode: 'MarkdownV2',
             });
+
           } catch (e) {
             await telegram.send_message(config.telegram_token, {
               chat_id: -691850503,
