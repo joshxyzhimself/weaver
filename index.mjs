@@ -8,7 +8,6 @@ import * as uwu from './modules/uwu.mjs';
 import * as telegram from './modules/telegram.mjs';
 import * as proc from './modules/proc.mjs';
 import { assert } from './modules/assert.mjs';
-import { sleep } from './modules/sleep.mjs';
 
 const __production = process.argv.includes('--production');
 const __filename = url.fileURLToPath(import.meta.url);
@@ -63,7 +62,7 @@ const handle_tasks = async () => {
       }
     }
   }
-  await sleep(1000);
+  await proc.sleep(1000);
   process.nextTick(handle_tasks);
 };
 process.nextTick(handle_tasks);

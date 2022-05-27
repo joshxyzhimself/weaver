@@ -2,7 +2,7 @@
 
 import fetch, { FormData, File } from 'node-fetch';
 import { assert } from './assert.mjs';
-import { sleep } from './sleep.mjs';
+import * as proc from './proc.mjs';
 
 /**
  * @type {import('./telegram').endpoint}
@@ -160,7 +160,7 @@ export const stream_updates = async (token, on_update) => {
           console.error(e);
         }
       }
-      await sleep(1000);
+      await proc.sleep(1000);
       const next_offset = updates.length === 0 ? undefined : updates[updates.length - 1].update_id + 1;
       process.nextTick(stream_update, next_offset);
     } catch (e) {

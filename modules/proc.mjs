@@ -83,3 +83,12 @@ export const on_exit = (callback) => {
   process.on('SIGINT', on_process_signal);
   process.on('exit', on_process_exit);
 };
+
+
+/**
+ * @param {number} timeout
+ */
+export const sleep = async (timeout) => {
+  assert(typeof timeout === 'number');
+  await new Promise((resolve) => setTimeout(resolve, timeout));
+};
