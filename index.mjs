@@ -106,6 +106,8 @@ process.nextTick(async () => {
             assert(typeof time_number === 'number', 'ERR_INVALID_TASK_TIME', 'Invalid task time.');
             assert(Number.isFinite(time_number) === true, 'ERR_INVALID_TASK_TIME', 'Invalid task time.');
             assert(Number.isInteger(time_number) === true, 'ERR_INVALID_TASK_TIME', 'Invalid task time.');
+            assert(0 <= time_number, 'ERR_INVALID_TASK_TIME', 'Invalid task time.');
+            assert(time_number <= 2400, 'ERR_INVALID_TASK_TIME', 'Invalid task time.');
 
             const hour = Number(time_string.substring(0, 2));
             const minute = Number(time_string.substring(2, 4));
