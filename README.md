@@ -4,13 +4,9 @@
 
 ```json
 {
+  "http_hostname": "XXX",
   "http_port": 8080,
-  "postgresql_host": "localhost",
-  "postgresql_port": 5432,
-  "postgresql_username": "postgres",
-  "postgresql_password": "postgres",
-  "postgresql_database": "postgres",
-  "telegram_token": "example_token"
+  "telegram_token": "XXX"
 }
 ```
 
@@ -18,11 +14,11 @@
 
 - set timezone
 - create daily task
-- create weekly task
 
 #### not supported
 
 - create one-time tasks
+- create weekly task
 - create monthly tasks
 - create yearly tasks
 
@@ -68,7 +64,7 @@ interface weekly_task {
 
 #### remove tasks
 
-- /remove example-task
+- /delete example-task
 
 #### Check
 
