@@ -178,7 +178,27 @@ process.nextTick(async () => {
           }
           break;
         }
-        case '/weekly': {
+        case '/delete': {
+          const chat_id = update.message.chat.id;
+          try {
+            const name = segments[1];
+            assert(typeof name === 'string', 'ERR_INVALID_TASK_NAME', 'Invalid task name.');
+            const task_index = tasks.findIndex((task) => task.chat_id === chat_id && task.name === name);
+            assert(0 <= task_index, 'ERR_INVALID_TASK', 'Invalid task.');
+            tasks.splice(task_index, 1);
+            await telegram.send_message(config.telegram_token, {
+              chat_id,
+              text: telegram.text(`${name} (removed)`),
+              parse_mode: 'MarkdownV2',
+            });
+
+          } catch (e) {
+            await telegram.send_message(config.telegram_token, {
+              chat_id,
+              text: telegram.text(e.message),
+              parse_mode: 'MarkdownV2',
+            });
+          }
           break;
         }
         case '/test': {
