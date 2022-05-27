@@ -76,7 +76,7 @@ const handle_update = async (update) => {
   if (typeof update?.message?.text === 'string') {
     const segments = update.message.text.split(' ');
     switch (segments[0]) {
-      case 'start': {
+      case '/start': {
         const chat_id = update.message.chat.id;
         const text = [
           'Welcome to Weaver bot.',
