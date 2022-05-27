@@ -13,20 +13,24 @@ import { sleep } from './modules/sleep.mjs';
 const __production = process.argv.includes('--production');
 const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+const __offsets = path.join(__dirname, 'offsets.json');
+const __tasks = path.join(__dirname, 'tasks.json');
 
 console.log({ config, __production, __filename, __dirname });
 
 /**
  * @type {Map<number, number>}
  */
-const utc_offsets = new Map();
+const offsets = new Map(proc.load_array(__offsets));
 
 /**
  * @type {import('./index').task[]}
  */
-const tasks = [];
+const tasks = proc.load_array(__tasks);
 
 proc.on_exit(() => {
+  proc.save_array(__offsets, Array.from(offsets));
+  proc.save_array(__tasks, tasks);
   console.log('END.');
 });
 
@@ -43,7 +47,7 @@ const utc_offset_to_timezone = (offset) => {
 const check_tasks = async () => {
   for (let i = 0, l = tasks.length; i < l; i += 1) {
     const task = tasks[i];
-    const utc_offset = utc_offsets.get(task.chat_id);
+    const utc_offset = offsets.get(task.chat_id);
     const now = luxon.DateTime.now().setZone(utc_offset_to_timezone(utc_offset));
     if (luxon.DateTime.fromISO(task.next) < now) {
       try {
@@ -84,7 +88,7 @@ process.nextTick(async () => {
           const chat_id = update.message.chat.id;
 
           if (segments.length === 1) {
-            const utc_offset = utc_offsets.get(chat_id) || 0;
+            const utc_offset = offsets.get(chat_id) || 0;
             await telegram.send_message(config.telegram_token, {
               chat_id,
               text: telegram.text(`Timezone offset is ${utc_offset_to_timezone(utc_offset)}.`),
@@ -106,7 +110,7 @@ process.nextTick(async () => {
             assert(Number.isInteger(offset_number) === true, 'ERR_INVALID_utc_offset', 'Invalid timezone offset.');
 
             const utc_offset = offset_number;
-            utc_offsets.set(chat_id, offset_number);
+            offsets.set(chat_id, offset_number);
 
             await telegram.send_message(config.telegram_token, {
               chat_id,
@@ -146,7 +150,7 @@ process.nextTick(async () => {
           }
 
           try {
-            const utc_offset = utc_offsets.get(chat_id) || 0;
+            const utc_offset = offsets.get(chat_id) || 0;
 
             const name = segments[1];
             assert(typeof name === 'string', 'ERR_INVALID_TASK_NAME', 'Invalid task name.');
