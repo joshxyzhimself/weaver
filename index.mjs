@@ -231,11 +231,12 @@ const handle_update = async (update) => {
       }
       case '/list': {
         const chat_id = update.message.chat.id;
+        const chat_id_tasks = tasks.filter((task) => task.chat_id === chat_id);
         let text = 'Daily Tasks:';
-        if (tasks.length === 0) {
+        if (chat_id_tasks.length === 0) {
           text += '\n(none)';
         } else {
-          tasks.filter((task) => task.chat_id === chat_id).forEach((task) => {
+          chat_id_tasks.forEach((task) => {
             const next = luxon.DateTime.fromISO(task.next);
             text += `\n${task.name} (next ${next.toRelative()})`;
           });
