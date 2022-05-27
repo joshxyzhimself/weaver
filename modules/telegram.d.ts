@@ -1,13 +1,21 @@
 
 import * as grammyjs_types from '@grammyjs/types';
 
+export interface file {
+  name: string;
+  buffer: Buffer;
+}
+
 export type endpoint = (token: string, method: string) => string;
 export const endpoint: create_endpoint;
 
 export type json = (url: string, body: any) => Promise<any>;
 export const json: json;
 
-export type multipart = (url: string, body: any) => Promise<any>;
+export interface multipart_body {
+  [key: string]: string|file;
+}
+export type multipart = (url: string, body: multipart_body) => Promise<any>;
 export const multipart: multipart;
 
 export interface send_message_body {
@@ -27,10 +35,6 @@ export interface delete_message_body {
 export type delete_message = (token: string, body: delete_message_body) => Promise<any>;
 export const delete_message: delete_message;
 
-export interface file {
-  name: string;
-  buffer: Buffer;
-}
 export interface send_photo_body {
   chat_id: number;
   caption?: string;

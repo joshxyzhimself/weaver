@@ -41,10 +41,9 @@ export const multipart = async (url, body) => {
   Object.entries(body).forEach((entry) => {
     const [key, value] = entry;
     if (value instanceof Object) {
-      if (typeof value.name === 'string' && value.buffer instanceof Buffer) {
-
-      }
-      form_data.append(key, new File([value]));
+      assert(typeof value.name === 'string');
+      assert(value.buffer instanceof Buffer);
+      form_data.append(key, new File([value.buffer], value.name));
     } else {
       form_data.append(key, value);
     }
@@ -53,9 +52,8 @@ export const multipart = async (url, body) => {
     method: 'POST',
     body: form_data,
   });
-  const response_json = await response.json();
-  console.log({ response_json });
   assert(response.status === 200);
+  const response_json = await response.json();
   return response_json;
 };
 
@@ -94,7 +92,9 @@ export const send_photo = async (token, body) => {
   assert(body instanceof Object);
   assert(typeof body.chat_id === 'number');
   assert(body.caption === undefined || typeof body.caption === 'string');
-  assert(body.photo instanceof Buffer);
+  assert(body.photo instanceof Object);
+  assert(typeof body.photo.name === 'string');
+  assert(body.photo.buffer instanceof Buffer);
   const response = await multipart(endpoint(token, 'sendPhoto'), body);
   return response;
 };
