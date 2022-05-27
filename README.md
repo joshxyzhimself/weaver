@@ -5,6 +5,8 @@
 ```
 Welcome to Weaver bot.
 
+Telegram bot for daily tasks. For personal and team use.
+
 Commands:
 /start - shows this intro
 /tz - show current time zone
