@@ -6,6 +6,7 @@ import * as luxon from 'luxon';
 import { config } from './modules/config.mjs';
 import * as uwu from './modules/uwu.mjs';
 import * as telegram from './modules/telegram.mjs';
+import * as proc from './modules/proc.mjs';
 import { assert } from './modules/assert.mjs';
 import { sleep } from './modules/sleep.mjs';
 
@@ -24,6 +25,10 @@ const utc_offsets = new Map();
  * @type {import('./index').task[]}
  */
 const tasks = [];
+
+proc.on_exit(() => {
+  console.log('END.');
+});
 
 /**
  * @param {number} offset
