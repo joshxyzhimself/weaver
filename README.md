@@ -53,10 +53,19 @@ Notes:
 
 #### Not supported
 
-- create one-time tasks
-- create weekly task
-- create monthly tasks
-- create yearly tasks
+- one-time tasks
+- weekly task
+- monthly tasks
+- yearly tasks
+
+#### Database
+
+- offsets and tasks are saved to & loaded from JSON files.
+
+#### Deployment
+
+- PM2 for process management.
+- Caddy for TLS.
 
 #### License
 
