@@ -65,10 +65,6 @@ export interface request_headers {
   x_forwarded_for: string;
 }
 
-export interface request_body_json {
-  [key:string]: any;
-}
-
 export interface request_body_part {
   name: string;
   data: ArrayBuffer;
@@ -78,7 +74,7 @@ export interface request_body_part {
 
 export interface request_body {
   buffer: Buffer;
-  json: request_body_json;
+  json: any;
   parts: request_body_part[];
 }
 
