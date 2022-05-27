@@ -76,6 +76,29 @@ const handle_update = async (update) => {
   if (typeof update?.message?.text === 'string') {
     const segments = update.message.text.split(' ');
     switch (segments[0]) {
+      case 'start': {
+        const chat_id = update.message.chat.id;
+        const text = [
+          'Welcome to Weaver bot.',
+          '',
+          'commands:',
+          '/tz [offset]',
+          '/create [task-name] [hhmm]',
+          '/delete [task-name]',
+          '/list',
+          '',
+          'example:',
+          '/tz +8',
+          '/create example-task 0700',
+          '/delete example-task',
+        ].join('\n');
+        await telegram.send_message(config.telegram_token, {
+          chat_id,
+          text: telegram.text(text),
+          parse_mode: 'MarkdownV2',
+        });
+        break;
+      }
       case '/tz': {
         const chat_id = update.message.chat.id;
 
@@ -119,28 +142,8 @@ const handle_update = async (update) => {
         }
         break;
       }
-      case '/daily': {
-
+      case '/create': {
         const chat_id = update.message.chat.id;
-
-        if (segments.length === 1) {
-          let text = 'Daily Tasks:';
-          if (tasks.length === 0) {
-            text += '\n(none)';
-          } else {
-            tasks.forEach((task) => {
-              const next = luxon.DateTime.fromISO(task.next);
-              text += `\n${task.name} (next ${next.toRelative()})`;
-            });
-          }
-          await telegram.send_message(config.telegram_token, {
-            chat_id: chat_id,
-            text: telegram.text(text),
-            parse_mode: 'MarkdownV2',
-          });
-          break;
-        }
-
         try {
           const utc_offset = offsets.get(chat_id) || 0;
 
@@ -210,6 +213,24 @@ const handle_update = async (update) => {
             parse_mode: 'MarkdownV2',
           });
         }
+        break;
+      }
+      case '/list': {
+        const chat_id = update.message.chat.id;
+        let text = 'Daily Tasks:';
+        if (tasks.length === 0) {
+          text += '\n(none)';
+        } else {
+          tasks.forEach((task) => {
+            const next = luxon.DateTime.fromISO(task.next);
+            text += `\n${task.name} (next ${next.toRelative()})`;
+          });
+        }
+        await telegram.send_message(config.telegram_token, {
+          chat_id: chat_id,
+          text: telegram.text(text),
+          parse_mode: 'MarkdownV2',
+        });
         break;
       }
       case '/test': {
