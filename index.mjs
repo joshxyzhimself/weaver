@@ -123,7 +123,6 @@ process.nextTick(async () => {
             let text = 'Daily Tasks:';
             tasks.forEach((task) => {
               const next = luxon.DateTime.fromISO(task.next);
-              text += '\n';
               text += `\n${task.name} (next ${next.toRelative()})`;
             });
             await telegram.send_message(config.telegram_token, {
