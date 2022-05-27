@@ -24,6 +24,9 @@ export interface delete_message_body {
 export type delete_message = (token: string, body: delete_message_body) => Promise<any>;
 export const delete_message: delete_message;
 
+export type delete_webhook = (token: string) => Promise<any>;
+export const delete_webhook: delete_webhook;
+
 export interface set_webhook_body {
   url: string;
   max_connections: number;
@@ -32,9 +35,6 @@ export interface set_webhook_body {
 }
 export type set_webhook = (token: string, body: set_webhook_body) => Promise<any>;
 export const set_webhook: set_webhook;
-
-export type delete_webhook = (token: string) => Promise<any>;
-export const delete_webhook: delete_webhook;
 
 export interface get_updates_body {
   offset?: number;

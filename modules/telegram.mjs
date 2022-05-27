@@ -57,6 +57,16 @@ export const delete_message = async (token, body) => {
 
 
 /**
+ * @type {import('./telegram').delete_webhook}
+ */
+export const delete_webhook = async (token) => {
+  assert(typeof token === 'string');
+  const response = await post(endpoint(token, 'deleteWebhook'), {});
+  return response;
+};
+
+
+/**
  * @type {import('./telegram').set_webhook}
  */
 export const set_webhook = async (token, body) => {
@@ -65,17 +75,8 @@ export const set_webhook = async (token, body) => {
   assert(typeof body.url === 'string');
   assert(typeof body.max_connections === 'number');
   assert(body.allowed_updates instanceof Array);
+  await delete_webhook(token);
   const response = await post(endpoint(token, 'setWebhook'), body);
-  return response;
-};
-
-
-/**
- * @type {import('./telegram').delete_webhook}
- */
-export const delete_webhook = async (token) => {
-  assert(typeof token === 'string');
-  const response = await post(endpoint(token, 'deleteWebhook'), {});
   return response;
 };
 
