@@ -26,6 +26,8 @@ Notes:
 - set your tz offset before creating tasks.
 - task-name must be in kebab-case-format.
 - hhmm is in military time format, 0000 to 2359.
+- for personal use, message the bot.
+- for team use, add the bot to your group. 
 ```
 
 #### Configuration
