@@ -20,6 +20,9 @@ console.log({ config, __production, __filename, __dirname });
  */
 const utc_offsets = new Map();
 
+/**
+ * @type {import('./index').task[]}
+ */
 const tasks = [];
 
 /**
@@ -37,13 +40,13 @@ const check_tasks = async () => {
     const task = tasks[i];
     const utc_offset = utc_offsets.get(task.chat_id);
     const now = luxon.DateTime.now().setZone(utc_offset_to_timezone(utc_offset));
-    const next = luxon.DateTime.fromISO(task.next);
-    if (next < now) {
+    if (luxon.DateTime.fromISO(task.next) < now) {
       try {
-        task.next = next.plus({ day: 1 });
+        const next = luxon.DateTime.fromISO(task.next).plus({ day: 1 });
+        task.next = next.toISO();
         await telegram.send_message(config.telegram_token, {
           chat_id: task.chat_id,
-          text: telegram.text(`${task.name} (alert, next ${task.next.toRelative()})`),
+          text: telegram.text(`${task.name} (alert, next ${next.toRelative()})`),
           parse_mode: 'MarkdownV2',
         });
       } catch (e) {
@@ -164,7 +167,10 @@ process.nextTick(async () => {
             const current = now.set({ hour, minute, second: 0, millisecond: 0 });
             const next = now < current ? current : current.plus({ day: 1 });
 
-            const task = { chat_id, name, next: next.toISO() };
+            /**
+             * @type {import('./index').task}
+             */
+            const task = { chat_id, name, hour, minute, next: next.toISO() };
             tasks.push(task);
 
             await telegram.send_message(config.telegram_token, {
