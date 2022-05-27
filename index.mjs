@@ -82,7 +82,7 @@ const handle_update = async (update) => {
           'Welcome to Weaver bot.',
           '',
           'Commands:',
-          telegram.code('/tz [offset]'),
+          '/tz [offset]',
           '/create [task-name] [hhmm]',
           '/delete [task-name]',
           '/list',
