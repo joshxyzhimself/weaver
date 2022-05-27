@@ -1,6 +1,34 @@
 # weaver
 
-#### config
+- https://t.me/weavery_bot
+
+```
+Welcome to Weaver bot.
+
+Commands:
+/start - shows this intro
+/tz - show current time zone
+/tz [offset] - set current time zone
+/create [task-name] [hhmm] - create daily task
+/delete [task-name] - delete daily task
+/list - list daily tasks
+
+Examples:
+/start
+/tz
+/tz +8
+/create example-task 0700
+/delete example-task
+/list
+
+Notes:
+- default time zone is UTC+0.
+- set your time zone before creating tasks.
+```
+
+#### Configuration
+
+- config.json
 
 ```json
 {
@@ -10,48 +38,20 @@
 }
 ```
 
-#### supported
+#### Supported
 
 - set timezone
 - create daily task
 - delete daily task
 - list daily tasks
 
-#### not supported
+#### Not supported
 
 - create one-time tasks
 - create weekly task
 - create monthly tasks
 - create yearly tasks
 
-#### set timezone
-
-- Default timezone is UTC+0
-- /tz +08
-- /tz -08
-
-#### create daily task
-
-- /daily example-task 1900
-
-```ts
-interface daily_task {
-  id: string;
-  chat_id: string;
-  name: string;
-  hour: number;
-  next: number;
-}
-```
-
-#### delete daily task
-
-- /delete example-task
-
-#### list daily tasks
-
-- /list
-
-#### license
+#### License
 
 MIT
