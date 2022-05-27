@@ -81,16 +81,18 @@ const handle_update = async (update) => {
         const text = [
           'Welcome to Weaver bot.',
           '',
-          'commands:',
+          'Commands:',
           '/tz [offset]',
           '/create [task-name] [hhmm]',
           '/delete [task-name]',
           '/list',
           '',
-          'example:',
+          'Examples:',
           '/tz +8',
           '/create example-task 0700',
           '/delete example-task',
+          '',
+          'Note: correct time zone must always be set before adding tasks.',
         ].join('\n');
         await telegram.send_message(config.telegram_token, {
           chat_id,
