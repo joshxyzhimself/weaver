@@ -42,9 +42,8 @@ const check_tasks = async () => {
       try {
         task.next = next.plus({ day: 1 });
         const text = [
-          '-- task:',
-          `name: ${task.name}`,
-          `next: ${next.toISO()}`,
+          `${task.name} (alert)`,
+          `Next ${task.next.toRelative()}`,
         ].join('\n');
         await telegram.send_message(config.telegram_token, {
           chat_id: task.chat_id,
@@ -79,6 +78,7 @@ process.nextTick(async () => {
       switch (segments[0]) {
         case '/tz': {
           const chat_id = update.message.chat.id;
+
           if (segments.length === 1) {
             const utc_offset = utc_offsets.get(chat_id) || 0;
             await telegram.send_message(config.telegram_token, {
@@ -88,8 +88,8 @@ process.nextTick(async () => {
             });
             break;
           }
-          try {
 
+          try {
             const offset_string = segments[1];
             assert(typeof offset_string === 'string', 'ERR_INVALID_utc_offset', 'Invalid timezone offset.');
 
@@ -120,7 +120,25 @@ process.nextTick(async () => {
           break;
         }
         case '/daily': {
+
           const chat_id = update.message.chat.id;
+
+          if (segments.length === 1) {
+            let text = 'daily tasks';
+            tasks.forEach((task) => {
+              const next = luxon.DateTime.fromISO(task.next);
+              text += '\n';
+              text += `\n${task.name}`;
+              text += `\nNext ${next.toRelative()}`;
+            });
+            await telegram.send_message(config.telegram_token, {
+              chat_id: chat_id,
+              text: telegram.text(text),
+              parse_mode: 'MarkdownV2',
+            });
+            break;
+          }
+
           try {
             const utc_offset = utc_offsets.get(chat_id) || 0;
 
@@ -149,9 +167,8 @@ process.nextTick(async () => {
             tasks.push(task);
 
             const text = [
-              '-- task created:',
-              `name: ${name}`,
-              `next: ${next.toISO()}`,
+              `${name} (created)`,
+              `Next ${next.toRelative()}`,
             ].join('\n');
 
             await telegram.send_message(config.telegram_token, {
