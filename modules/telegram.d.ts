@@ -4,8 +4,11 @@ import * as grammyjs_types from '@grammyjs/types';
 export type endpoint = (token: string, method: string) => string;
 export const endpoint: create_endpoint;
 
-export type post = (url: string, body: any) => Promise<any>;
-export const post: post;
+export type json = (url: string, body: any) => Promise<any>;
+export const json: json;
+
+export type multipart = (url: string, body: any) => Promise<any>;
+export const multipart: multipart;
 
 export interface send_message_body {
   chat_id: number;
@@ -23,6 +26,19 @@ export interface delete_message_body {
 }
 export type delete_message = (token: string, body: delete_message_body) => Promise<any>;
 export const delete_message: delete_message;
+
+export interface file {
+  name: string;
+  buffer: Buffer;
+}
+export interface send_photo_body {
+  chat_id: number;
+  caption?: string;
+  photo: file;
+  [key: string]: any;
+}
+export type send_photo = (token: string, body: send_photo_body) => Promise<undici2.response>;
+export const send_photo: send_photo;
 
 export type delete_webhook = (token: string) => Promise<any>;
 export const delete_webhook: delete_webhook;
@@ -47,6 +63,16 @@ export const get_updates: get_updates;
 export type stream_update = (update: grammyjs_types.Update) => Promise<void>;
 export type stream_updates = (token: string, stream_update: stream_update) => Promise<any>;
 export const stream_updates: stream_updates;
+
+export type get_me = (token: string) => Promise<undici2.response>;
+export const get_me: get_me;
+
+export interface get_chat_administrators_body {
+  chat_id: number;
+  [key: string]: any;
+}
+export type get_chat_administrators = (token: string, body: get_chat_administrators_body) => Promise<undici2.response>;
+export const get_chat_administrators: get_chat_administrators;
 
 export type code = (value: string) => string;
 export type text = (value: string) => string;

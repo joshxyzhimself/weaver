@@ -1,6 +1,6 @@
 // @ts-check
 
-import fetch from 'node-fetch';
+import fetch, { FormData, File } from 'node-fetch';
 import { assert } from './assert.mjs';
 import { sleep } from './sleep.mjs';
 
@@ -15,9 +15,9 @@ export const endpoint = (token, method) => {
 
 
 /**
- * @type {import('./telegram').post}
+ * @type {import('./telegram').json}
  */
-export const post = async (url, body) => {
+export const json = async (url, body) => {
   assert(typeof url === 'string');
   assert(body instanceof Object);
   const response = await fetch(url, {
@@ -26,9 +26,39 @@ export const post = async (url, body) => {
     body: JSON.stringify(body),
   });
   assert(response.status === 200);
-  const json = await response.json();
-  return json;
+  const response_json = await response.json();
+  return response_json;
 };
+
+
+/**
+ * @type {import('./telegram').multipart}
+ */
+export const multipart = async (url, body) => {
+  assert(typeof url === 'string');
+  assert(body instanceof Object);
+  const form_data = new FormData();
+  Object.entries(body).forEach((entry) => {
+    const [key, value] = entry;
+    if (value instanceof Object) {
+      if (typeof value.name === 'string' && value.buffer instanceof Buffer) {
+
+      }
+      form_data.append(key, new File([value]));
+    } else {
+      form_data.append(key, value);
+    }
+  });
+  const response = await fetch(url, {
+    method: 'POST',
+    body: form_data,
+  });
+  const response_json = await response.json();
+  console.log({ response_json });
+  assert(response.status === 200);
+  return response_json;
+};
+
 
 /**
  * @type {import('./telegram').send_message}
@@ -38,7 +68,7 @@ export const send_message = async (token, body) => {
   assert(body instanceof Object);
   assert(typeof body.chat_id === 'number');
   assert(typeof body.text === 'string');
-  const response = await post(endpoint(token, 'sendMessage'), body);
+  const response = await json(endpoint(token, 'sendMessage'), body);
   return response;
 };
 
@@ -51,7 +81,21 @@ export const delete_message = async (token, body) => {
   assert(body instanceof Object);
   assert(typeof body.chat_id === 'number');
   assert(typeof body.message_id === 'number');
-  const response = await post(endpoint(token, 'deleteMessage'), body);
+  const response = await json(endpoint(token, 'deleteMessage'), body);
+  return response;
+};
+
+
+/**
+ * @type {import('./telegram').send_photo}
+ */
+export const send_photo = async (token, body) => {
+  assert(typeof token === 'string');
+  assert(body instanceof Object);
+  assert(typeof body.chat_id === 'number');
+  assert(body.caption === undefined || typeof body.caption === 'string');
+  assert(body.photo instanceof Buffer);
+  const response = await multipart(endpoint(token, 'sendPhoto'), body);
   return response;
 };
 
@@ -61,7 +105,7 @@ export const delete_message = async (token, body) => {
  */
 export const delete_webhook = async (token) => {
   assert(typeof token === 'string');
-  const response = await post(endpoint(token, 'deleteWebhook'), {});
+  const response = await json(endpoint(token, 'deleteWebhook'), {});
   return response;
 };
 
@@ -76,7 +120,7 @@ export const set_webhook = async (token, body) => {
   assert(typeof body.max_connections === 'number');
   assert(body.allowed_updates instanceof Array);
   await delete_webhook(token);
-  const response = await post(endpoint(token, 'setWebhook'), body);
+  const response = await json(endpoint(token, 'setWebhook'), body);
   return response;
 };
 
@@ -89,7 +133,7 @@ export const get_updates = async (token, body) => {
   assert(body instanceof Object);
   assert(body.offset === undefined || typeof body.offset === 'number');
   assert(body.allowed_updates instanceof Array);
-  const response = await post(endpoint(token, 'getUpdates'), body);
+  const response = await json(endpoint(token, 'getUpdates'), body);
   assert(response instanceof Object);
   assert(response.ok === true);
   assert(response.result instanceof Array);
@@ -124,6 +168,29 @@ export const stream_updates = async (token, on_update) => {
     }
   };
   process.nextTick(stream_update);
+};
+
+
+/**
+ * @type {import('./telegram').get_me}
+ */
+export const get_me = async (token) => {
+  assert(typeof token === 'string');
+  const response = await json(endpoint(token, 'getMe'), {});
+  assert(response instanceof Object);
+  return response;
+};
+
+
+/**
+ * @type {import('./telegram').get_chat_administrators}
+ */
+export const get_chat_administrators = async (token, body) => {
+  assert(typeof token === 'string');
+  assert(body instanceof Object);
+  assert(typeof body.chat_id === 'number');
+  const response = await json(endpoint(token, 'getChatAdministrators'), body);
+  return response;
 };
 
 
