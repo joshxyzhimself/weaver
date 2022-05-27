@@ -14,6 +14,8 @@
 
 - set timezone
 - create daily task
+- delete daily task
+- list daily tasks
 
 #### not supported
 
@@ -24,7 +26,7 @@
 
 #### set timezone
 
-- Default timezone is UTC+00
+- Default timezone is UTC+0
 - /tz +08
 - /tz -08
 
@@ -42,37 +44,14 @@ interface daily_task {
 }
 ```
 
-#### create weekly task
-
-- /weekly example-task monday 1900
-
-```ts
-interface weekly_task {
-  id: string;
-  chat_id: string;
-  name: string;
-  day: number;
-  hour: number;
-  next: number;
-}
-```
-
-#### show tasks
-
-- /daily
-- /weekly
-
-#### remove tasks
+#### delete daily task
 
 - /delete example-task
 
-#### Check
+#### list daily tasks
 
-```js
-const now = luxon.DateTime.now();
+- /list
 
-// if now is greater than next
-// create notification
-// update task.next
+#### license
 
-```
+MIT
