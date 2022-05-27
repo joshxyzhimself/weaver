@@ -150,6 +150,9 @@ process.nextTick(async () => {
             assert(0 <= time_number, 'ERR_INVALID_TASK_TIME', 'Invalid task time.');
             assert(time_number <= 2400, 'ERR_INVALID_TASK_TIME', 'Invalid task time.');
 
+            const task_name_conflict = tasks.find((task) => task.chat_id === chat_id && task.name === name);
+            assert(task_name_conflict === undefined, 'ERR_INVALID_TASK_NAME', 'Invalid task name.');
+
             const hour = Number(time_string.substring(0, 2));
             const minute = Number(time_string.substring(2, 4));
 
