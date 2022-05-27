@@ -98,8 +98,10 @@ const handle_update = async (update) => {
           '/list',
           '',
           'Notes:',
-          '- default time zone is UTC+0.',
-          '- set your time zone before creating tasks.',
+          '- default time zone offset is UTC+0.',
+          '- set your time zone offset before creating tasks.',
+          '- task-name must be in kebab-case-format.',
+          '- hhmm is in military time format, 0000 to 2359.',
         ].join('\n');
         await telegram.send_message(config.telegram_token, {
           chat_id,
@@ -168,7 +170,7 @@ const handle_update = async (update) => {
           assert(Number.isFinite(time_number) === true, 'ERR_INVALID_TASK_TIME', 'Invalid task time.');
           assert(Number.isInteger(time_number) === true, 'ERR_INVALID_TASK_TIME', 'Invalid task time.');
           assert(0 <= time_number, 'ERR_INVALID_TASK_TIME', 'Invalid task time.');
-          assert(time_number <= 2400, 'ERR_INVALID_TASK_TIME', 'Invalid task time.');
+          assert(time_number <= 2359, 'ERR_INVALID_TASK_TIME', 'Invalid task time.');
 
           const task_name_conflict = tasks.find((task) => task.chat_id === chat_id && task.name === name);
           assert(task_name_conflict === undefined, 'ERR_INVALID_TASK_NAME', 'Invalid task name.');

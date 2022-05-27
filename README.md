@@ -24,6 +24,8 @@ Examples:
 Notes:
 - default time zone is UTC+0.
 - set your time zone before creating tasks.
+- task-names must be in kebab-case-format.
+- hhmm is in military time format, 0000 to 2359.
 ```
 
 #### Configuration
