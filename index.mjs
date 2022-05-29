@@ -3,11 +3,16 @@
 import url from 'url';
 import path from 'path';
 import * as luxon from 'luxon';
-import { config } from './modules/config.mjs';
-import * as uwu from './modules/uwu.mjs';
-import * as telegram from './modules/telegram.mjs';
-import * as proc from './modules/proc.mjs';
-import { assert } from './modules/assert.mjs';
+import { config } from '@jxyz/modules/config.mjs';
+import * as uwu from '@jxyz/modules/uwu.mjs';
+import * as telegram from '@jxyz/modules/telegram.mjs';
+import * as proc from '@jxyz/modules/proc.mjs';
+import { assert } from '@jxyz/modules/assert.mjs';
+
+
+assert(typeof config.http_hostname === 'string');
+assert(typeof config.http_port === 'number');
+assert(typeof config.telegram_token === 'string');
 
 const __production = process.argv.includes('--production');
 const __filename = url.fileURLToPath(import.meta.url);

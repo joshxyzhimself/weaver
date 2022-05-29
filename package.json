@@ -13,12 +13,13 @@
   },
   "homepage": "https://github.com/joshxyzhimself/weaver#readme",
   "dependencies": {
+    "@grammyjs/types": "github:grammyjs/types#v2.7.1",
+    "@jxyz/modules": "github:joshxyzhimself/modules#v1.0.2",
     "luxon": "^2.4.0",
     "mime-types": "^2.1.35",
     "node-fetch": "^3.2.4",
     "postgres": "^3.2.4",
-    "uWebSockets.js": "github:uNetworking/uWebSockets.js#v20.10.0",
-    "@grammyjs/types": "github:grammyjs/types#v2.7.1"
+    "uWebSockets.js": "github:uNetworking/uWebSockets.js#v20.10.0"
   },
   "devDependencies": {
     "eslint": "^8.3.0",
