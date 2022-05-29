@@ -72,6 +72,12 @@ Notes:
 - https://unsplash.com/photos/6cgqD95Cfi8
 - Photo by Reza Delkhosh, used as bot pic.
 
+#### Minor Latency Issues
+
+- Telegram data centers are at Germany.
+- Weaver bot data centers are at Singapore.
+- Does not use immediate response on webhooks.
+
 #### License
 
 MIT
