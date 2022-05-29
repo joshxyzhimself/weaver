@@ -76,7 +76,8 @@ Notes:
 
 - Telegram data centers are at Germany.
 - Weaver bot data centers are at Singapore.
-- Weaver bot does not use immediate response on webhooks.
+- Weaver bot does not create requests in response to updates from webhooks.
+- https://core.telegram.org/bots/faq#how-can-i-make-requests-in-response-to-updates
 
 #### License
 
