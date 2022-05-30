@@ -52,8 +52,8 @@ Notes:
 
 ```json
 {
-  "http_hostname": "XXX",
-  "http_port": 8080,
+  "http_hostname": "weaver.jxyz.me",
+  "http_port": 9090,
   "telegram_token": "XXX"
 }
 ```
