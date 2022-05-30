@@ -221,7 +221,7 @@ const handle_update = async (update) => {
           tasks.splice(task_index, 1);
           await telegram.send_message(config.telegram_token, {
             chat_id,
-            text: telegram.text(`${name} (removed)`),
+            text: telegram.text(`${name} (deleted)`),
             parse_mode: 'MarkdownV2',
           });
 
