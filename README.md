@@ -58,6 +58,48 @@ Notes:
 }
 ```
 
+#### TLS
+
+- /etc/caddy/Caddyfile
+
+```
+{
+  log {
+    output file /var/log/access.log
+    format json
+  }
+}
+
+weaver.jxyz.me {
+  handle {
+    header {
+      Cache-Control "no-cache"
+      Strict-Transport-Security "max-age=63072000"
+      defer
+    }
+    encode gzip
+    reverse_proxy 0.0.0.0:9090
+  }
+  tls joshxyzhimself@gmail.com {
+    protocols tls1.2 tls1.3
+    ciphers TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256 TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256 TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384 TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256 TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256
+  }
+}
+```
+
+#### Dependencies
+
+```sh
+npm install @jxyz/modules@github:joshxyzhimself/modules#v1.2.0
+```
+
+#### Initialization
+
+```sh
+node ./index.mjs
+pm2 start ./index.mjs --name=weaver
+```
+
 #### Database
 
 - offsets and tasks are saved to & loaded from JSON files.
@@ -78,12 +120,6 @@ Notes:
 - Weaver bot data centers are at Singapore.
 - Weaver bot does not create requests in response to updates from webhooks.
 - https://core.telegram.org/bots/faq#how-can-i-make-requests-in-response-to-updates
-
-#### Dependencies
-
-```sh
-npm install @jxyz/modules@github:joshxyzhimself/modules#v1.2.0
-```
 
 #### License
 
