@@ -236,7 +236,7 @@ const handle_update = async (update) => {
       }
       case '/list': {
         const chat_id = update.message.chat.id;
-        const chat_id_tasks = tasks.filter((task) => task.chat_id === chat_id);
+        const chat_id_tasks = tasks.filter((task) => task.chat_id === chat_id).sort((a, b) => a.hour - b.hour);
         let text = 'Daily Tasks:';
         if (chat_id_tasks.length === 0) {
           text += '\n(none)';
