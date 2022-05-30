@@ -58,8 +58,15 @@ Notes:
 }
 ```
 
+#### Dependencies
+
+```sh
+npm install @jxyz/modules@github:joshxyzhimself/modules#v1.2.0
+```
+
 #### TLS
 
+- Caddy for TLS.
 - /etc/caddy/Caddyfile
 
 ```
@@ -87,13 +94,9 @@ weaver.jxyz.me {
 }
 ```
 
-#### Dependencies
-
-```sh
-npm install @jxyz/modules@github:joshxyzhimself/modules#v1.2.0
-```
-
 #### Initialization
+
+- PM2 for process management.
 
 ```sh
 node ./index.mjs
@@ -104,15 +107,9 @@ pm2 start ./index.mjs --name=weaver
 
 - offsets and tasks are saved to & loaded from JSON files.
 
-#### Deployment
-
-- PM2 for process management.
-- Caddy for TLS.
-
 #### Credits
 
-- https://unsplash.com/photos/6cgqD95Cfi8
-- Photo by Reza Delkhosh, used as bot pic.
+- Photo by Reza Delkhosh, used as bot pic. [[1]](https://unsplash.com/photos/6cgqD95Cfi8)
 
 #### Minor Latency Issues
 
