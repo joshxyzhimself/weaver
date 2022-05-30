@@ -59,7 +59,7 @@ const handle_tasks = async () => {
         task.next = next.toISO();
         await telegram.send_message(config.telegram_token, {
           chat_id: task.chat_id,
-          text: telegram.text(`${task.name} (alert, next ${next.toRelative()})`),
+          text: telegram.text(`${task.name} (alert, ${task.hour}:${task.minute}, ${next.toRelative()})`),
           parse_mode: 'MarkdownV2',
         });
       } catch (e) {
@@ -198,7 +198,7 @@ const handle_update = async (update) => {
 
           await telegram.send_message(config.telegram_token, {
             chat_id,
-            text: telegram.text(`${name} (created, next ${next.toRelative()})`),
+            text: telegram.text(`${name} (created, ${task.hour}:${task.minute}, ${next.toRelative()})`),
             parse_mode: 'MarkdownV2',
           });
 
@@ -243,7 +243,7 @@ const handle_update = async (update) => {
         } else {
           chat_id_tasks.forEach((task) => {
             const next = luxon.DateTime.fromISO(task.next);
-            text += `\n${task.name} (next ${next.toRelative()})`;
+            text += `\n${task.name} (${task.hour}:${task.minute}, ${next.toRelative()})`;
           });
         }
         await telegram.send_message(config.telegram_token, {
