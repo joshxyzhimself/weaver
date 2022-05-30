@@ -116,10 +116,8 @@ pm2 start ./index.mjs --name=weaver
 
 #### Minor Latency Issues
 
-- Telegram data centers are at Germany.
-- Weaver bot data centers are at Singapore.
-- Weaver bot does not create requests in response to updates from webhooks.
-- https://core.telegram.org/bots/faq#how-can-i-make-requests-in-response-to-updates
+- Telegram data centers are located at Germany. Weaver bot data centers are located at Singapore.
+- Weaver bot does not create requests in response to updates from webhooks. [[1]](https://core.telegram.org/bots/faq#how-can-i-make-requests-in-response-to-updates)
 
 #### License
 
