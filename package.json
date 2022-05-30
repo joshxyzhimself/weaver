@@ -13,7 +13,7 @@
   },
   "homepage": "https://github.com/joshxyzhimself/weaver#readme",
   "dependencies": {
-    "@jxyz/modules": "github:joshxyzhimself/modules#v1.0.2",
+    "@jxyz/modules": "github:joshxyzhimself/modules#v1.2.0",
     "luxon": "^2.4.0",
     "node-fetch": "^3.2.4"
   },

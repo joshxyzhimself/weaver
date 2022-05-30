@@ -79,6 +79,12 @@ Notes:
 - Weaver bot does not create requests in response to updates from webhooks.
 - https://core.telegram.org/bots/faq#how-can-i-make-requests-in-response-to-updates
 
+#### Dependencies
+
+```sh
+npm install @jxyz/modules@github:joshxyzhimself/modules#v1.2.0
+```
+
 #### License
 
 MIT
