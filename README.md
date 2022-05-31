@@ -100,7 +100,7 @@ weaver.jxyz.me {
 
 ```sh
 node ./index.mjs
-pm2 start ./index.mjs --name=weaver
+pm2 start ./index.mjs --name=weaver -- --production
 ```
 
 #### Database
